@@ -10,8 +10,8 @@ namespace ProjectApiRestDapper.Repository.Interfaces
     {
         Task<List<Customer>> GetAllAsync();
         Task<Customer> GetByIdAsync(int id);
-        Task<Customer> CreateAsync(Customer user);
-        Task<Customer> UpdateAsync(Customer user, int id);
+        Task<Customer> CreateAsync(Customer customer);
+        Task<Customer> UpdateAsync(Customer customer, int id);
         Task<bool> DeleteAsync(int id);
     }
 }
