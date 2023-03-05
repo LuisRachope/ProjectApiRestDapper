@@ -11,5 +11,13 @@ namespace ProjectApiRestDapper.Model
         public string Name { get; set; }
         public string Email { get; set; }
         public ICollection<Product> Products { get; set; }
+
+        public Customer(int id, string name, string email, ICollection<Product> products)
+        {
+            Id = id;
+            Name = name;
+            Email = email;
+            Products = products;
+        }
     }
 }

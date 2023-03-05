@@ -7,6 +7,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using ProjectApiRestDapper.Context;
+using ProjectApiRestDapper.Extensions;
+using ProjectApiRestDapper.Repository;
+using ProjectApiRestDapper.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,12 +30,16 @@ namespace ProjectApiRestDapper
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddContexts(this.Configuration);
 
             services.AddControllers();
+
+            services.AddRepositories();
+
             services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProjectApiRestDapper", Version = "v1" });
-            });
+             {
+                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProjectApiRestDapper", Version = "v1" });
+             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

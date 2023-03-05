@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace ProjectApiRestDapper.Repository.Interfaces
 {
-    interface IProductRepository
+    public interface IProductRepository
     {
-        Task<List<Product>> GetAllAsync();
+        Task<IEnumerable<Product>> GetAllAsync();
         Task<Product> GetByIdAsync(int id);
         Task<Product> CreateAsync(Product product);
         Task<Product> UpdateAsync(Product product, int id);
