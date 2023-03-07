@@ -10,8 +10,8 @@ namespace ProjectApiRestDapper.Repository.Interfaces
     {
         Task<IEnumerable<Product>> GetAllAsync();
         Task<Product> GetByIdAsync(int id);
-        Task<Product> CreateAsync(Product product);
-        Task<Product> UpdateAsync(Product product, int id);
-        Task<bool> DeleteAsync(int id);
+        Task CreateAsync(Product product);
+        Task UpdateAsync(Product product);
+        Task DeleteAsync(int id);
     }
 }

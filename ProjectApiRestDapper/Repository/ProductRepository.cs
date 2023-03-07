@@ -23,24 +23,29 @@ namespace ProjectApiRestDapper.Repository
         public async Task<IEnumerable<Product>> GetAllAsync() =>
             await _context.Connection.QueryAsync<Product>(Queries.ProductQueries.LISTAR);
 
-        public Task<Product> GetByIdAsync(int id)
+        public async Task<Product> GetByIdAsync(int id) =>
+            await _context.Connection.QueryFirstOrDefaultAsync<Product>(Queries.ProductQueries.OBTER, new { id });
+
+        public async Task CreateAsync(Product product)
         {
-            throw new NotImplementedException();
+            _param.Add("@Name", product.Name);
+            _param.Add("@Price", product.Price);
+            _param.Add("@Quantity", product.Quantity);
+
+            await _context.Connection.ExecuteScalarAsync(Queries.ProductQueries.INSERIR, _param);
         }
 
-        public Task<Product> CreateAsync(Product product)
+        public async Task UpdateAsync(Product product)
         {
-            throw new NotImplementedException();
+            _param.Add("@Id", product.Id);
+            _param.Add("@Name", product.Name);
+            _param.Add("@Price", product.Price);
+            _param.Add("@Quantity", product.Quantity);
+
+            await _context.Connection.ExecuteScalarAsync(Queries.ProductQueries.ATUALIZAR, _param);
         }
 
-        public Task<bool> DeleteAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Product> UpdateAsync(Product product, int id)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task DeleteAsync(int id) =>
+            await _context.Connection.ExecuteAsync(Queries.ProductQueries.APAGAR, new { id });
     }
 }
