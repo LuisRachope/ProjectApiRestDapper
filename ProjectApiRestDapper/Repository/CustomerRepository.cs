@@ -43,19 +43,19 @@ namespace ProjectApiRestDapper.Repository
         public async Task CreateAsync(Customer customer)
         {
 
-            _param.Add("@Name");
-            _param.Add("@Email");
-            _param.Add("@ProductId");
+            _param.Add("@Name", customer.Name);
+            _param.Add("@Email", customer.Email);
+            _param.Add("@ProductId", customer.Products.Id);
 
             await _context.Connection.ExecuteScalarAsync(Queries.CustomerQueries.CRIAR, _param);
         }
 
-        public Task<bool> DeleteAsync(int id)
+        public Task DeleteAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Customer> UpdateAsync(Customer user, int id)
+        public Task UpdateAsync(Customer user, int id)
         {
             throw new NotImplementedException();
         }

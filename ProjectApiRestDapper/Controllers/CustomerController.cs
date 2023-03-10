@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ProjectApiRestDapper.Context;
 using ProjectApiRestDapper.Model;
+using ProjectApiRestDapper.Model.Form;
 using ProjectApiRestDapper.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -17,11 +18,13 @@ namespace ProjectApiRestDapper.Controllers
     {
         private readonly DbContext _context;
         private readonly ICustomerRepository _customerRepository;
+        private readonly IProductRepository _productRepository;
 
-        public CustomerController(DbContext context, ICustomerRepository customerRepository)
+        public CustomerController(DbContext context, ICustomerRepository customerRepository, IProductRepository productRepository)
         {
             _context = context;
             _customerRepository = customerRepository;
+            _productRepository = productRepository;
         }
 
         // GET: api/<CustomerController>
@@ -37,7 +40,7 @@ namespace ProjectApiRestDapper.Controllers
 
             return Ok(list);
         }
-            
+
 
         // GET api/<CustomerController>/5
         [HttpGet("{id}")]
@@ -60,8 +63,20 @@ namespace ProjectApiRestDapper.Controllers
 
         // POST api/<CustomerController>
         [HttpPost]
-        public void Create([FromBody] string value)
+        public async Task<IActionResult> Create(CustomerModelForm model)
         {
+            Product p = await _productRepository.GetByIdAsync(model.ProductId);
+
+            if (p is null)
+            {
+                return BadRequest($"O Produto Id: {model.ProductId} não existe na base de dados.");
+            }
+
+            Customer cr = new Customer(model.CustomerName, model.CustomerEmail, p);
+
+            await _customerRepository.CreateAsync(cr);
+
+            return Ok(cr);
         }
 
         // PUT api/<CustomerController>/5

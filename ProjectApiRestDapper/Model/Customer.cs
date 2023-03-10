@@ -23,5 +23,12 @@ namespace ProjectApiRestDapper.Model
             Email = email;
             Products = products;
         }
+
+        public Customer(string name, string email, Product products)
+        {
+            Name = name;
+            Email = email;
+            Products = products;
+        }
     }
 }
