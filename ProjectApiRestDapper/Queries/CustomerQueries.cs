@@ -35,6 +35,17 @@
                 VALUES (@Name, 
                         @Email, 
                         @ProductId);";
+
+        public const string APAGAR =
+                @"DELETE FROM customer
+                WHERE Id = @Id;";
+
+        public const string ALTERAR =
+                @"UPDATE customer SET 
+                Name = @Name, 
+                Email = @Email, 
+                ProductId = @ProductId 
+                WHERE Id = @Id;";
     }
 }
 

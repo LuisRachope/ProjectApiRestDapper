@@ -81,14 +81,49 @@ namespace ProjectApiRestDapper.Controllers
 
         // PUT api/<CustomerController>/5
         [HttpPut("{id}")]
-        public void Update(int id, [FromBody] string value)
+        public async Task<IActionResult> Update(int id, [FromBody] CustomerModelForm customer)
         {
+            if (id <= 0)
+            {
+                return BadRequest($"O Id: {id} não existe na base de dados.");
+            }
+
+            Customer user = await _customerRepository.GetByIdAsync(id);
+
+            if (user is null)
+            {
+                return BadRequest($"Erro ao tentar localizar o Customer: {customer.CustomerName} na base de dados, por favor verificar os dados informados.");
+            }
+
+            user.Name = customer.CustomerName;
+            user.Email = customer.CustomerEmail;
+
+            Product product = await _productRepository.GetByIdAsync(customer.ProductId);
+
+            if (product is null)
+            {
+                return BadRequest($"O produto Id: {customer.ProductId} não existe na base de dados.");
+            }
+
+            user.Products = product;
+
+            await _customerRepository.UpdateAsync(user);
+
+            return Ok(user);
         }
 
         // DELETE api/<CustomerController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            if (id <= 0)
+            {
+                return BadRequest($"O Id: {id} não está correto.");
+            }
+
+            await _customerRepository.DeleteAsync(id);
+
+            return Ok($"O Id: {id} foi apagado com suecesso.");
         }
     }
 }

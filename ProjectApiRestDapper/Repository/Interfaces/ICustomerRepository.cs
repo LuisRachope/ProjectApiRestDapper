@@ -11,7 +11,7 @@ namespace ProjectApiRestDapper.Repository.Interfaces
         Task<IEnumerable<Customer>> GetAllAsync();
         Task<Customer> GetByIdAsync(int id);
         Task CreateAsync(Customer customer);
-        Task UpdateAsync(Customer customer, int id);
+        Task UpdateAsync(Customer customer);
         Task DeleteAsync(int id);
     }
 }
