@@ -1,4 +1,7 @@
-﻿using ProjectApiRestDapper.Model;
+﻿using Dapper;
+using Microsoft.AspNetCore.Mvc;
+using ProjectApiRestDapper.Context;
+using ProjectApiRestDapper.Model;
 using ProjectApiRestDapper.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -9,22 +12,45 @@ namespace ProjectApiRestDapper.Repository
 {
     public class CustomerRepository : ICustomerRepository
     {
-        public Task<Customer> CreateAsync(Customer user)
+        private readonly DbContext _context;
+        private readonly DynamicParameters _param;
+
+        public CustomerRepository(DbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
+            _param = new DynamicParameters();
+        }
+
+        private static Customer mapPropriedades(Customer customer, Product product)
+        {
+            customer.Products = product;
+            return customer;
+        }
+
+        public async Task<IEnumerable<Customer>> GetAllAsync() =>
+            await _context.Connection.QueryAsync<Customer, Product, Customer>(Queries.CustomerQueries.LISTAR, map: mapPropriedades, splitOn: "Id");
+
+
+        public async Task<Customer> GetByIdAsync(int id)
+        {
+            _param.Add("@Id", id);
+
+            return _context.Connection.Query<Customer, Product, Customer>(Queries.CustomerQueries.BUSCAR,
+                map: mapPropriedades, splitOn: "Id", param: _param).FirstOrDefault();
+        }
+
+
+        public async Task CreateAsync(Customer customer)
+        {
+
+            _param.Add("@Name");
+            _param.Add("@Email");
+            _param.Add("@ProductId");
+
+            await _context.Connection.ExecuteScalarAsync(Queries.CustomerQueries.CRIAR, _param);
         }
 
         public Task<bool> DeleteAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<List<Customer>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Customer> GetByIdAsync(int id)
         {
             throw new NotImplementedException();
         }

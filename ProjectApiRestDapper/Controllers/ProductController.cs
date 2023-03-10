@@ -25,12 +25,6 @@ namespace ProjectApiRestDapper.Controllers
             _repository = repository;
         }
 
-        private ICollection<Product> _ListProducts = new List<Product>
-        {
-            new Product(1, "Tv", 874.85, 2),
-            new Product(2, "PlayStation 5", 489.99, 8)
-        };
-
         // GET: api/<ProductController>
         [HttpGet]
         public async Task<IActionResult> GetAll() =>

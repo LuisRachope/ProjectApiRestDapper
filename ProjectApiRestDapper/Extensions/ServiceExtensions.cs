@@ -23,6 +23,7 @@ namespace ProjectApiRestDapper.Extensions
 
         public static void AddRepositories(this IServiceCollection services)
         {
+            services.AddTransient<ICustomerRepository, CustomerRepository>();
             services.AddTransient<IProductRepository, ProductRepository>();
         }
 
